@@ -56,7 +56,4 @@ void loop() {
   }else{
     Serial.println("Tidak ada data");
   }
-
-  delay(2000);
-
 }

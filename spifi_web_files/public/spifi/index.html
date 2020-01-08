@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SPi-Fi - Saklar Pintar</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  
+
+</head>
+<body>
+    <div class="container">
+        
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1 class="mt-3">SPi-Fi</h1>
+            <h5 class="mt-1">Saklar Pintar berbasis Wifi</h5>
+            <!-- <p class="mt-4">
+                <b>Instruksi</b>
+                <br>
+                Matikan / Nyalakan sambungan listrik dengan menekan tombol di bawah!
+            </p> -->
+            <img src="img/qr.jpeg" height="200px" width="200px" alt="">
+            <div class="row m-4">
+                <div class="col-md-3 offset-md-3">
+                    <button id="onBtn" class="m-1 btn btn-block btn-success">ON</button>
+                </div>
+                <div class="col-md-3">
+                    <button id="offBtn" class="m-1 btn btn-block btn-danger">OFF</button>
+                </div>
+            </div>
+            <p class="m-2">Status :</p>
+            <h3 id="statusTxt">OFF</h3>
+            <img id="statusImg" src="" alt="statusImg" height="200px" width="200px" class="img-thumbnail text-center">
+            
+          </div>  
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>    
+    <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDl_gBJNiTtC9RAN8ZQf8JwWCRA4tAiAQg",
+            authDomain: "hologram-labs.firebaseapp.com",
+            databaseURL: "https://hologram-labs.firebaseio.com",
+            projectId: "hologram-labs",
+            storageBucket: "hologram-labs.appspot.com",
+            messagingSenderId: "865272713489",
+            appId: "1:865272713489:web:91c8204877582aa57e7cb0"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+    </script>
+    <script>
+        let status = 'OFF';
+        db.ref('/spifi/switch_1').on('value', function(snapshot) {
+            status = snapshot.val();
+            $('#statusTxt').text(status);
+            if(status == 'OFF'){
+                $('#statusImg').prop('src','img/off.jpeg' )
+            }else if(status == 'ON'){
+                $('#statusImg').prop('src','img/on.jpeg' )
+            }
+        });
+
+        $('#onBtn').click(function(){
+            db.ref('spifi/switch_1').set('ON');
+        });
+
+        $('#offBtn').click(function(){
+            db.ref('spifi/switch_1').set('OFF');
+        });
+
+    </script>
+  
+</body>
+</html>
